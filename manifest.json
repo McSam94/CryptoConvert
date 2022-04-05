@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "CryptoConvert",
+  "version": "1.0.0",
+  "action": {
+    "default_popup": "src/popup/index.html",
+    "default_title": "CryptoConvertPopup"
+  },
+  "background": {
+    "service_worker": "src/background/index.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "js": ["src/content-script/index.ts"]
+    }
+  ],
+  "permissions": ["storage"]
+}
