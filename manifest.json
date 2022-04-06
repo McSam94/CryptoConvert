@@ -21,6 +21,7 @@
     {
       "run_at": "document_idle",
       "matches": ["https://*/*"],
+      "css": ["src/content-script/index.css"],
       "js": ["src/content-script/index.ts"]
     }
   ],

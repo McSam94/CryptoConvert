@@ -30,7 +30,7 @@ const addTooltip = (selectedDOM: Element, content: string) => {
 };
 
 const isInvalidNumber = (value: string | null | undefined) => {
-  return !value || !/^\d+\.\d+$/.test(value);
+  return !value || !/[+-]?([0-9]*[.])?[0-9]+/.test(value);
 };
 
 const updateCurrency = async () => {
@@ -39,28 +39,34 @@ const updateCurrency = async () => {
   chrome.runtime.sendMessage(
     { type: MESSAGE_EVENTS.GET_MARKETS, payload: { currency } },
     ({ markets }) => {
+      document.body.normalize();
       markets.forEach((market: any) => {
         const snapShot = document.evaluate(
           `//*[contains(text(),"${market.symbol.toUpperCase()}")]`,
           document,
           null,
-          XPathResult.ORDERED_NODE_SNAPSHOT_TYPE
+          XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+          null
         );
 
         [...new Array(snapShot.snapshotLength).keys()].forEach((idx) => {
           let snapShotDOM = snapShot.snapshotItem(idx) as Element;
           const previousDOM = snapShotDOM.previousElementSibling;
 
-          let amount: string | null | undefined =
-            snapShotDOM.textContent?.split(" ")?.[0];
+          let amount: string | null | undefined = snapShotDOM.textContent
+            ?.split(" ")?.[0]
+            ?.replaceAll(",", "");
 
           if (isInvalidNumber(amount)) {
-            amount = previousDOM?.textContent;
+            amount = previousDOM?.textContent?.replaceAll(",", "");
             snapShotDOM = previousDOM ?? snapShotDOM;
           }
 
           if (isInvalidNumber(amount)) {
-            amount = previousDOM?.firstElementChild?.textContent;
+            amount = previousDOM?.firstElementChild?.textContent?.replaceAll(
+              ",",
+              ""
+            );
           }
 
           if (!isInvalidNumber(amount))

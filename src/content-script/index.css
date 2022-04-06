@@ -1,0 +1,4 @@
+[aria-label][class*="cooltipz"]:after,
+[aria-label][data-cooltipz-dir]:after {
+  z-index: 99999 !important;
+}
