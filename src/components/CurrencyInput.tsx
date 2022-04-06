@@ -69,7 +69,7 @@ const CurrencyInput: React.FC<CryptoInputProps> = ({
 
   return (
     <>
-      <div className="p-4 flex flex-row space-x-4 justify-between rounded-lg bg-gray-200/50">
+      <div className="p-4 flex flex-row space-x-4 justify-between rounded-lg">
         {isFetchingCurrencies ? (
           <div className="h-10 w-24 animate-pulse bg-gray-200 rounded-lg" />
         ) : (
@@ -85,14 +85,14 @@ const CurrencyInput: React.FC<CryptoInputProps> = ({
               <Icon
                 name="chevronDown"
                 size={12}
-                colorFn={({ hover }) => (hover ? "black" : "grey")}
+                colorFn={({ hover }) => (hover ? "black" : "white")}
               />
             </div>
           </div>
         )}
         <input
           disabled={readonly}
-          className="text-lg font-bold bg-transparent text-black focus:outline-none appearance-none"
+          className="text-lg font-bold bg-transparent text-white focus:outline-none appearance-none"
           style={{
             direction: "rtl",
           }}
@@ -105,37 +105,33 @@ const CurrencyInput: React.FC<CryptoInputProps> = ({
       <Modal isOpen={isDropdownOpened} toggleModal={toggleDropdown}>
         <div className="flex p-4">
           <input
-            className="text-lg bg-gray-200 focus:outline-none appearance-none w-full px-6 py-4"
+            className="text-lg bg-gray-700 focus:outline-none appearance-none w-full px-6 py-4 rounded-lg"
             type="text"
             placeholder="🔍 Search"
             onChange={onSearch}
           />
         </div>
         <List
-          className="p-8"
           useIsScrolling
           itemData={filteredCurrencies}
-          innerElementType="ul"
           itemCount={filteredCurrencies.length}
           itemSize={80}
-          height={480 - 80}
-          width={423}
+          height={400 - 92} // 92 - search bar height
+          width={410}
         >
           {({ data, index, style }) => (
-            <li
-              className="text-base font-semibold bg-white px-6 flex justify-center items-center"
+            <div
+              className="text-base font-semibold bg-gray-800 px-6 justify-center items-center w-full"
               style={style}
+              onClick={() => _onCurrencySelect(data[index])}
             >
-              <div
-                className="flex flex-row space-x-4 items-center rounded-lg bg-gray-200 w-full p-4 whitespace-nowrap truncate cursor-pointer hover:shadow-md"
-                onClick={() => _onCurrencySelect(data[index])}
-              >
+              <div className="flex flex-row space-x-4 items-center rounded-lg bg-black text-white p-6 whitespace-nowrap truncate cursor-pointer hover:shadow-md">
                 <img src={getFlagSrc(data[index])} className="w-5 h-3" />
                 <span className="text-base font-medium">
                   {data[index].toUpperCase()}
                 </span>
               </div>
-            </li>
+            </div>
           )}
         </List>
       </Modal>
