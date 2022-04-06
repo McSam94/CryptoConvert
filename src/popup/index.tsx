@@ -71,7 +71,7 @@ function App() {
   return (
     <>
       <div className="min-w-[24rem] min-h-[30rem] bg-gray-800 text-white px-6">
-        <div className="flex flex-col h-full items-center space-y-10">
+        <div className="flex flex-col h-full items-center space-y-8">
           <div className="my-2 text-4xl font-bold border-b py-4 border-gray-50 w-full text-center">
             CRYPTO CONVERT
           </div>
@@ -98,6 +98,13 @@ function App() {
               setCurrencyInput((prevState) => ({ ...prevState, currency }))
             }
           />
+          <a href="https://buymeacoffee.com/oh8yMYq" target="_blank">
+            <img
+              className="h-10 cursor-pointer"
+              src={chrome.runtime.getURL("src/images/bmc-button.png")}
+              alt="bmc"
+            />
+          </a>
         </div>
       </div>
     </>

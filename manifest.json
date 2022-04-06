@@ -25,5 +25,11 @@
       "js": ["src/content-script/index.ts"]
     }
   ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/images/bmc-button.png"],
+      "matches": ["https://*/*"]
+    }
+  ],
   "permissions": ["storage"]
 }
