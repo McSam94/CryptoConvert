@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import Main from ".";
 import QueryProvider from "@provider/Query";
+import Main from ".";
 
 // Inject CSS
 import MainCss from "./index.css";
@@ -11,7 +11,7 @@ style.textContent = MainCss;
 
 // Svg Sprite
 import "virtual:svg-icons-register";
-import CoinGeckoProvider from "../provider/CoinCecko";
+import CoinGeckoProvider from "../provider/CoinGecko";
 import CurrencyProvider from "@provider/Currency";
 
 // React 18 way to initialize the react-dom

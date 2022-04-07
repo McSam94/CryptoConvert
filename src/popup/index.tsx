@@ -1,22 +1,22 @@
 import * as React from "react";
-import Icon from "@components/Icon";
-import CoinInput from "@components/CoinInput";
+// import Icon from "@components/Icon";
+// import CoinInput from "@components/CoinInput";
 import CurrencyInput from "@components/CurrencyInput";
-import { Market } from "@provider/CoinCecko";
+import { Market } from "@provider/CoinGecko";
 import useCoinGecko from "@hooks/CoinGecko";
 import { MESSAGE_EVENTS } from "@constants/events";
 import ReportIssue from "./report-issue";
 import BuyMeCoffee from "./buy-me-coffee";
 
 function App() {
-  const { markets, getMarkets } = useCoinGecko();
-  const [coinInput, setCoinInput] = React.useState<{
-    coinInfo: Market | null;
-    value: number | string;
-  }>({
-    coinInfo: null,
-    value: "",
-  });
+  // const { markets, getMarkets } = useCoinGecko();
+  // const [coinInput, setCoinInput] = React.useState<{
+  //   coinInfo: Market | null;
+  //   value: number | string;
+  // }>({
+  //   coinInfo: null,
+  //   value: "",
+  // });
   const [currencyInput, setCurrencyInput] = React.useState<{
     currency: string;
     value: number | string;

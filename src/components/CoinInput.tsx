@@ -3,7 +3,7 @@ import { FixedSizeList as List } from "react-window";
 import useCoinGecko from "@hooks/CoinGecko";
 import Icon from "./Icon";
 import Modal from "./Modal";
-import { Market } from "@provider/CoinCecko";
+import { Market } from "@provider/CoinGecko";
 
 interface CryptoInputProps {
   readonly?: boolean;
