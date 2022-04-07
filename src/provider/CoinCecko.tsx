@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useQuery } from "react-query";
-import { retrieveDataLocally } from "@utils/storage";
 import { MESSAGE_EVENTS } from "@constants/events";
 
 export interface Market {
