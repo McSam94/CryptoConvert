@@ -44,7 +44,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, toggleModal, children }) => {
 
   return ReactDOM.createPortal(
     <div className="flex flex-col bg-gray-800 text-white">
-      <div className="h-[calc(100vh-5rem)] relative">{children}</div>
+      <div className="h-[calc(100vh-5rem)] relative overflow-y-auto">
+        {children}
+      </div>
       <div className="fixed bottom-0 w-full h-[5rem] flex flex-col px-6 justify-center shadow-inner bg-gray-800">
         <div
           className="bg-gray-900 text-white hover:shadow-md py-4 rounded-lg text-center text-base font-medium cursor-pointer"

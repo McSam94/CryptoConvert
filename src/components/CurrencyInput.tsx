@@ -74,23 +74,19 @@ const CurrencyInput: React.FC<CryptoInputProps> = ({
           <div className="h-10 w-24 animate-pulse bg-gray-200 rounded-lg" />
         ) : (
           <div
-            className="flex flex-row space-x-2 items-center justify-center rounded-lg px-4 py-2 hover:shadow-md cursor-pointer"
+            className="flex flex-row space-x-2 items-center justify-center rounded-lg px-4 py-2 border border-white hover:border-yellow-400 shadow-white cursor-pointer"
             onClick={toggleDropdown}
           >
             <img src={getFlagSrc(selectedCurrency)} className="w-5 h-3" />
             <div className="text-base font-medium mr-2">
               {selectedCurrency.toUpperCase()}
             </div>
-            <div className="w-4 h-4">
-              <Icon
-                name="chevronDown"
-                size={12}
-                colorFn={({ hover }) => (hover ? "black" : "white")}
-              />
+            <div className="w-4 h-4 flex justify-center items-center">
+              <Icon name="chevronDown" size={12} color="white" />
             </div>
           </div>
         )}
-        <input
+        {/* <input
           disabled={readonly}
           className="text-lg font-bold bg-transparent text-white focus:outline-none appearance-none"
           style={{
@@ -100,7 +96,7 @@ const CurrencyInput: React.FC<CryptoInputProps> = ({
           placeholder="0.00"
           value={value}
           onChange={_onInput}
-        />
+        /> */}
       </div>
       <Modal isOpen={isDropdownOpened} toggleModal={toggleDropdown}>
         <div className="flex p-4">
@@ -117,15 +113,15 @@ const CurrencyInput: React.FC<CryptoInputProps> = ({
           itemCount={filteredCurrencies.length}
           itemSize={80}
           height={400 - 92} // 92 - search bar height
-          width={410}
+          width={384}
         >
           {({ data, index, style }) => (
             <div
-              className="text-base font-semibold bg-gray-800 px-6 justify-center items-center w-full"
+              className="text-base font-semibold bg-gray-800 px-4 flex justify-center items-center w-full"
               style={style}
               onClick={() => _onCurrencySelect(data[index])}
             >
-              <div className="flex flex-row space-x-4 items-center rounded-lg bg-black text-white p-6 whitespace-nowrap truncate cursor-pointer hover:shadow-md">
+              <div className="flex flex-row space-x-4 items-center rounded-lg bg-black w-full text-white p-6 whitespace-nowrap truncate cursor-pointer hover:shadow-md">
                 <img src={getFlagSrc(data[index])} className="w-5 h-3" />
                 <span className="text-base font-medium">
                   {data[index].toUpperCase()}

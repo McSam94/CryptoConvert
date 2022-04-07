@@ -5,6 +5,8 @@ import CurrencyInput from "@components/CurrencyInput";
 import { Market } from "@provider/CoinCecko";
 import useCoinGecko from "@hooks/CoinGecko";
 import { MESSAGE_EVENTS } from "@constants/events";
+import ReportIssue from "./report-issue";
+import BuyMeCoffee from "./buy-me-coffee";
 
 function App() {
   const { markets, getMarkets } = useCoinGecko();
@@ -25,10 +27,6 @@ function App() {
 
   const retrieveCurrency = React.useCallback(async () => {
     const local = await chrome.storage.local.get("currency");
-    console.log(
-      "🚀 ~ file: index.tsx ~ line 28 ~ retrieveCurrency ~ currency",
-      local
-    );
 
     setCurrencyInput((prevState) => ({
       ...prevState,
@@ -36,26 +34,26 @@ function App() {
     }));
   }, []);
 
-  React.useEffect(() => {
-    setCoinInput((prevState) => ({
-      ...prevState,
-      coinInfo: markets?.[0] ?? null,
-    }));
-  }, [markets]);
+  // React.useEffect(() => {
+  //   setCoinInput((prevState) => ({
+  //     ...prevState,
+  //     coinInfo: markets?.[0] ?? null,
+  //   }));
+  // }, [markets]);
+
+  // React.useEffect(() => {
+  //   if (!coinInput.coinInfo) return;
+  //   setCurrencyInput((prevState) => ({
+  //     ...prevState,
+  //     value:
+  //       coinInput.value === ""
+  //         ? ""
+  //         : (coinInput.coinInfo?.current_price ?? 0) * +coinInput.value,
+  //   }));
+  // }, [coinInput]);
 
   React.useEffect(() => {
-    if (!coinInput.coinInfo) return;
-    setCurrencyInput((prevState) => ({
-      ...prevState,
-      value:
-        coinInput.value === ""
-          ? ""
-          : (coinInput.coinInfo?.current_price ?? 0) * +coinInput.value,
-    }));
-  }, [coinInput]);
-
-  React.useEffect(() => {
-    getMarkets(currencyInput.currency);
+    // getMarkets(currencyInput.currency);
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       chrome.tabs.sendMessage(tabs[0].id ?? 0, {
         type: MESSAGE_EVENTS.SET_CURRENCY,
@@ -71,11 +69,18 @@ function App() {
   return (
     <>
       <div className="min-w-[24rem] min-h-[30rem] bg-gray-800 text-white px-6">
-        <div className="flex flex-col h-full items-center space-y-8">
-          <div className="my-2 text-4xl font-bold border-b py-4 border-gray-50 w-full text-center">
-            CRYPTO CONVERT
+        <div className="flex flex-col h-screen items-center space-y-6">
+          <div className="flex flex-row space-x-4 items-center border-b w-full justify-center">
+            <img
+              src={chrome.runtime.getURL("src/images/icon.png")}
+              alt="logo"
+              className="w-6 h-6"
+            />
+            <div className="my-2 text-xl font-bold py-4 border-gray-50 text-center">
+              CryptoConvert
+            </div>
           </div>
-          <CoinInput
+          {/* <CoinInput
             value={coinInput.value}
             coinValue={coinInput.coinInfo}
             onInput={(value) =>
@@ -87,24 +92,26 @@ function App() {
           />
           <div className="p-2 bg-gray-200/50 rounded-full">
             <Icon name="swap" color="black" />
+          </div> */}
+          <div className="flex flex-col justify-between h-full">
+            <div className="flex flex-col items-center">
+              <div className="text-xl font-semibold">Select currency</div>
+              <CurrencyInput
+                value={currencyInput.value}
+                currencyValue={currencyInput.currency}
+                onInput={(value) =>
+                  setCurrencyInput((prevState) => ({ ...prevState, value }))
+                }
+                onCurrencySelect={(currency) =>
+                  setCurrencyInput((prevState) => ({ ...prevState, currency }))
+                }
+              />
+            </div>
+            <div className="flex flex-col space-y-4 py-4">
+              <BuyMeCoffee />
+              <ReportIssue />
+            </div>
           </div>
-          <CurrencyInput
-            value={currencyInput.value}
-            currencyValue={currencyInput.currency}
-            onInput={(value) =>
-              setCurrencyInput((prevState) => ({ ...prevState, value }))
-            }
-            onCurrencySelect={(currency) =>
-              setCurrencyInput((prevState) => ({ ...prevState, currency }))
-            }
-          />
-          <a href="https://buymeacoffee.com/oh8yMYq" target="_blank">
-            <img
-              className="h-10 cursor-pointer"
-              src={chrome.runtime.getURL("src/images/bmc-button.png")}
-              alt="bmc"
-            />
-          </a>
         </div>
       </div>
     </>

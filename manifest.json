@@ -27,7 +27,11 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["src/images/bmc-button.png"],
+      "resources": [
+        "src/images/bmc-button.png",
+        "src/images/icon.png",
+        "src/images/bitcoin-qr.png"
+      ],
       "matches": ["https://*/*"]
     }
   ],
