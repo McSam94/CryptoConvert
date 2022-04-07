@@ -3,7 +3,7 @@ import classnames from "classnames";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-// import emailjs from "@emailjs/browser";
+import emailjs from "@emailjs/browser";
 import Icon from "@components/Icon";
 import Modal from "@components/Modal";
 
@@ -50,26 +50,26 @@ const ReportIssue: React.FC = () => {
   const reportIssue = React.useCallback(
     async (data) => {
       setIsSubmitting(true);
-      // emailjs
-      //   .send(
-      //     "default_service",
-      //     "template_7bdhymp",
-      //     data,
-      //     "user_NsNgWASzmF3ENY3FkbsvW"
-      //   )
-      //   .then(
-      //     () => {
-      //       setErrorMessage("");
-      //       setIsSubmitted(true);
-      //     },
-      //     () => {
-      //       setErrorMessage("Something went wrong. Please try again later.");
-      //     }
-      //   )
-      //   .finally(() => {
-      //     setIsSubmitting(false);
-      //     reset();
-      //   });
+      emailjs
+        .send(
+          "default_service",
+          "template_7bdhymp",
+          data,
+          "user_NsNgWASzmF3ENY3FkbsvW"
+        )
+        .then(
+          () => {
+            setErrorMessage("");
+            setIsSubmitted(true);
+          },
+          () => {
+            setErrorMessage("Something went wrong. Please try again later.");
+          }
+        )
+        .finally(() => {
+          setIsSubmitting(false);
+          reset();
+        });
     },
     [reset]
   );
