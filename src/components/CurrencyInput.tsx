@@ -20,7 +20,7 @@ const CurrencyInput: React.FC<CryptoInputProps> = ({
   onCurrencySelect,
   onInput,
 }) => {
-  const { currencies, isFetchingCurrencies } = useCurrency();
+  const { currencies } = useCurrency();
 
   const [selectedCurrency, setSelectedCurrency] = React.useState(
     currencyValue ?? "MYR"
@@ -54,12 +54,12 @@ const CurrencyInput: React.FC<CryptoInputProps> = ({
     [onCurrencySelect]
   );
 
-  const _onInput = React.useCallback(
-    (e) => {
-      onInput?.(e.target.value);
-    },
-    [onInput]
-  );
+  // const _onInput = React.useCallback(
+  //   (e) => {
+  //     onInput?.(e.target.value);
+  //   },
+  //   [onInput]
+  // );
 
   const onSearch = React.useCallback((evt) => setSearch(evt.target.value), []);
 
@@ -70,22 +70,18 @@ const CurrencyInput: React.FC<CryptoInputProps> = ({
   return (
     <>
       <div className="p-4 flex flex-row space-x-4 justify-between rounded-lg">
-        {isFetchingCurrencies ? (
-          <div className="h-10 w-24 animate-pulse bg-gray-200 rounded-lg" />
-        ) : (
-          <div
-            className="flex flex-row space-x-2 items-center justify-center rounded-lg px-4 py-2 border border-white hover:border-yellow-400 shadow-white cursor-pointer"
-            onClick={toggleDropdown}
-          >
-            <img src={getFlagSrc(selectedCurrency)} className="w-5 h-3" />
-            <div className="text-base font-medium mr-2">
-              {selectedCurrency.toUpperCase()}
-            </div>
-            <div className="w-4 h-4 flex justify-center items-center">
-              <Icon name="chevronDown" size={12} color="white" />
-            </div>
+        <div
+          className="flex flex-row space-x-2 items-center justify-center rounded-lg px-4 py-2 border border-white hover:border-yellow-400 shadow-white cursor-pointer"
+          onClick={toggleDropdown}
+        >
+          <img src={getFlagSrc(selectedCurrency)} className="w-5 h-3" />
+          <div className="text-base font-medium mr-2">
+            {selectedCurrency.toUpperCase()}
           </div>
-        )}
+          <div className="w-4 h-4 flex justify-center items-center">
+            <Icon name="chevronDown" size={12} color="white" />
+          </div>
+        </div>
         {/* <input
           disabled={readonly}
           className="text-lg font-bold bg-transparent text-white focus:outline-none appearance-none"
