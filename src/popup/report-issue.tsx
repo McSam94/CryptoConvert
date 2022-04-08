@@ -81,7 +81,7 @@ const ReportIssue: React.FC = () => {
         onClick={() => setIsModalOpen(true)}
       >
         <Icon name="report" color="white" />
-        <div className="text-base font-semibold">Report an issue.</div>
+        <div className="text-xs font-semibold">Report an issue.</div>
       </div>
       <Modal isOpen={isModalOpen} toggleModal={toggleModal}>
         <div className="flex flex-col space-y-4 p-6">

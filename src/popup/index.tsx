@@ -107,7 +107,7 @@ function App() {
                 }
               />
             </div>
-            <div className="flex flex-col space-y-4 py-4">
+            <div className="flex flex-col items-center space-y-4 py-4 w-full">
               <BuyMeCoffee />
               <ReportIssue />
             </div>

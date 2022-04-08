@@ -28,24 +28,27 @@ const BuyMeCoffee: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col space-y-4 ">
-        <div className="text-xs font-semibold">
-          If you like my work, consider buy me a coffee/bitcoin
+      <div className="flex flex-col space-y-4">
+        <div className="text-xs font-semibold text-center">
+          If you like my work, consider tip me
         </div>
         <div className="flex flex-row space-x-2 items-center w-full">
-          <a href="https://buymeacoffee.com/oh8yMYq" target="_blank">
-            <img
-              className="h-10 cursor-pointer"
-              src={chrome.runtime.getURL("src/images/bmc-button.png")}
-              alt="bmc"
-            />
-          </a>
+          <div className="flex flex-row space-x-2 items-center justify-center bg-[#FF424D] rounded-lg p-2 cursor-pointer">
+            <Icon name="patreon" />
+            <a
+              href="https://www.patreon.com/bePatron?u=138989"
+              target="_blank"
+              data-patreon-widget-type="become-patron-button"
+            >
+              Support me
+            </a>
+          </div>
           <div
             className="flex flex-row items-center space-x-2 bg-white rounded-lg p-2 cursor-pointer"
             onClick={toggleModal}
           >
-            <Icon name="bitcoin" size={24} />
-            <div className="text-sm text-black">Buy me bitcoin</div>
+            <Icon name="bitcoin" />
+            <div className="text-xs text-black">Buy me Bitcoin</div>
           </div>
         </div>
       </div>
