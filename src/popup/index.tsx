@@ -1,22 +1,12 @@
 import * as React from "react";
-// import Icon from "@components/Icon";
-// import CoinInput from "@components/CoinInput";
+import Slider from "rc-slider";
 import CurrencyInput from "@components/CurrencyInput";
-import { Market } from "@provider/CoinGecko";
-import useCoinGecko from "@hooks/CoinGecko";
 import { MESSAGE_EVENTS } from "@constants/events";
 import ReportIssue from "./report-issue";
 import BuyMeCoffee from "./buy-me-coffee";
+import { log } from "@utils/log";
 
 function App() {
-  // const { markets, getMarkets } = useCoinGecko();
-  // const [coinInput, setCoinInput] = React.useState<{
-  //   coinInfo: Market | null;
-  //   value: number | string;
-  // }>({
-  //   coinInfo: null,
-  //   value: "",
-  // });
   const [currencyInput, setCurrencyInput] = React.useState<{
     currency: string;
     value: number | string;
@@ -24,46 +14,48 @@ function App() {
     currency: "USD",
     value: "",
   });
+  const [interval, setInterval] = React.useState<number>(1);
 
   const retrieveCurrency = React.useCallback(async () => {
     const local = await chrome.storage.local.get("currency");
+    if (!local) return;
 
+    log(`Successfully retrieved currency: ${local?.currency}`);
     setCurrencyInput((prevState) => ({
       ...prevState,
       currency: local?.currency ?? "USD",
     }));
   }, []);
 
-  // React.useEffect(() => {
-  //   setCoinInput((prevState) => ({
-  //     ...prevState,
-  //     coinInfo: markets?.[0] ?? null,
-  //   }));
-  // }, [markets]);
+  const retrieveInterval = React.useCallback(async () => {
+    const local = await chrome.storage.local.get("interval");
+    if (!local) return;
 
-  // React.useEffect(() => {
-  //   if (!coinInput.coinInfo) return;
-  //   setCurrencyInput((prevState) => ({
-  //     ...prevState,
-  //     value:
-  //       coinInput.value === ""
-  //         ? ""
-  //         : (coinInput.coinInfo?.current_price ?? 0) * +coinInput.value,
-  //   }));
-  // }, [coinInput]);
+    log(`Successfully retrieved interval: ${local?.interval}`);
+    setInterval(local?.interval ?? 1);
+  }, []);
+
+  const onIntervalChange = React.useCallback(async (val) => {
+    setInterval(val);
+  }, []);
 
   React.useEffect(() => {
-    // getMarkets(currencyInput.currency);
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id ?? 0, {
-        type: MESSAGE_EVENTS.SET_CURRENCY,
-        payload: { currency: currencyInput.currency },
-      });
+    chrome.runtime.sendMessage({
+      type: MESSAGE_EVENTS.SET_CURRENCY,
+      payload: { currency: currencyInput.currency },
     });
   }, [currencyInput.currency]);
 
   React.useEffect(() => {
+    chrome.runtime.sendMessage({
+      type: MESSAGE_EVENTS.SET_INTERVAL,
+      payload: { interval },
+    });
+  }, [interval]);
+
+  React.useEffect(() => {
     retrieveCurrency();
+    retrieveInterval();
   }, []);
 
   return (
@@ -80,19 +72,6 @@ function App() {
               CryptoConvert
             </div>
           </div>
-          {/* <CoinInput
-            value={coinInput.value}
-            coinValue={coinInput.coinInfo}
-            onInput={(value) =>
-              setCoinInput((prevState) => ({ ...prevState, value }))
-            }
-            onCoinSelect={(coinInfo) =>
-              setCoinInput((prevState) => ({ ...prevState, coinInfo }))
-            }
-          />
-          <div className="p-2 bg-gray-200/50 rounded-full">
-            <Icon name="swap" color="black" />
-          </div> */}
           <div className="flex flex-col justify-between h-full">
             <div className="flex flex-col items-center">
               <div className="text-xl font-semibold">Select currency</div>
@@ -105,6 +84,18 @@ function App() {
                 onCurrencySelect={(currency) =>
                   setCurrencyInput((prevState) => ({ ...prevState, currency }))
                 }
+              />
+            </div>
+            <div className="flex flex-col space-y-4">
+              <div className="text-base font-semibold text-center">
+                Price refresh interval (m)
+              </div>
+              <Slider
+                min={1}
+                value={interval}
+                marks={{ 0: 1, 20: 5, 40: 7, 60: 8, 80: 10, 100: 15 }}
+                onChange={onIntervalChange}
+                step={null}
               />
             </div>
             <div className="flex flex-col items-center space-y-4 py-4 w-full">

@@ -1,9 +1,9 @@
 {
   "name": "crypto-convert",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
-    "watch": "npm-watch",
+    "watch": "NODE_ENV=dev npm-watch",
     "dev": "vite build --mode development --watch",
     "build": "tsc && vite build",
     "preview": "vite preview"
@@ -28,6 +28,7 @@
     "coingecko-api": "^1.0.10",
     "date-fns": "^2.28.0",
     "lodash.throttle": "^4.1.1",
+    "rc-slider": "^10.0.0-alpha.6",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.29.0",

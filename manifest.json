@@ -1,7 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "CryptoConvert",
-  "version": "1.0.2",
+  "name": "Crypto Convert",
+  "description": "Tools to help you convert cryptocurrency magically",
+  "version": "1.0.0",
   "action": {
     "default_popup": "src/popup/index.html",
     "default_title": "CryptoConvertPopup",
