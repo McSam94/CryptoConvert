@@ -20,7 +20,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     const currency = request?.payload?.currency;
     if (!currency) return false;
 
-    log(`Successfully Persisted currency: ${currency}`);
+    log(`Successfully persisted currency: ${currency}`);
     chrome.storage.local.set({ currency });
   }
 
@@ -30,6 +30,13 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
 
     log(`Successfully persisted interval: ${interval}`);
     chrome.storage.local.set({ interval });
+  }
+
+  if (request.type === MESSAGE_EVENTS.SET_ON_OFF) {
+    const isOff = request?.payload?.isOff;
+
+    log(`Successfully persisted power: ${!isOff}`);
+    chrome.storage.local.set({ isOff });
   }
 
   return true;

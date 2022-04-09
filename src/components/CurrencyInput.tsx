@@ -6,24 +6,18 @@ import useCurrency from "@hooks/Currency";
 import { getFlagSrc } from "@utils/flag";
 
 interface CryptoInputProps {
-  readonly?: boolean;
-  value?: number | string;
-  currencyValue?: string;
-  onCurrencySelect?: (coin: string) => void;
-  onInput?: (value: number) => void;
+  value?: string;
+  onSelect?: (coin: string) => void;
 }
 
 const CurrencyInput: React.FC<CryptoInputProps> = ({
-  readonly = false,
   value = "",
-  currencyValue,
-  onCurrencySelect,
-  onInput,
+  onSelect,
 }) => {
   const { currencies } = useCurrency();
 
   const [selectedCurrency, setSelectedCurrency] = React.useState(
-    currencyValue ?? "MYR"
+    value ?? "MYR"
   );
   const [search, setSearch] = React.useState<string>("");
 
@@ -48,24 +42,17 @@ const CurrencyInput: React.FC<CryptoInputProps> = ({
   const _onCurrencySelect = React.useCallback(
     (currency) => {
       setSelectedCurrency(currency);
-      onCurrencySelect?.(currency);
+      onSelect?.(currency);
       setIsDropdownOpened(false);
     },
-    [onCurrencySelect]
+    [onSelect]
   );
-
-  // const _onInput = React.useCallback(
-  //   (e) => {
-  //     onInput?.(e.target.value);
-  //   },
-  //   [onInput]
-  // );
 
   const onSearch = React.useCallback((evt) => setSearch(evt.target.value), []);
 
   React.useEffect(() => {
-    setSelectedCurrency(currencyValue ?? "MYR");
-  }, [currencyValue]);
+    setSelectedCurrency(value ?? "USD");
+  }, [value]);
 
   return (
     <>
@@ -82,17 +69,6 @@ const CurrencyInput: React.FC<CryptoInputProps> = ({
             <Icon name="chevronDown" size={12} color="white" />
           </div>
         </div>
-        {/* <input
-          disabled={readonly}
-          className="text-lg font-bold bg-transparent text-white focus:outline-none appearance-none"
-          style={{
-            direction: "rtl",
-          }}
-          type="number"
-          placeholder="0.00"
-          value={value}
-          onChange={_onInput}
-        /> */}
       </div>
       <Modal isOpen={isDropdownOpened} toggleModal={toggleDropdown}>
         <div className="flex p-4">
@@ -108,7 +84,7 @@ const CurrencyInput: React.FC<CryptoInputProps> = ({
           itemData={filteredCurrencies}
           itemCount={filteredCurrencies.length}
           itemSize={80}
-          height={400 - 92} // 92 - search bar height
+          height={465 - 92} // 92 - search bar height
           width={384}
         >
           {({ data, index, style }) => (

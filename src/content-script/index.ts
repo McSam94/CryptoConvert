@@ -1,6 +1,6 @@
 import { MESSAGE_EVENTS } from "@constants/events";
 import { log, groupLog } from "@utils/log";
-import throttle from "lodash.throttle";
+import { throttle } from "@utils/throttle";
 
 let timer: NodeJS.Timer;
 
@@ -37,7 +37,9 @@ const startTimer = throttle(async () => {
     clearInterval(timer);
     log(`Previous timer cleared`);
   }
-  const local = await chrome.storage.local.get("interval");
+
+  const local = await chrome.storage.local.get(["interval", "isOff"]);
+  if (local?.isOff) return;
   const interval = local?.interval ?? 1;
 
   log(`New Interval started`);
