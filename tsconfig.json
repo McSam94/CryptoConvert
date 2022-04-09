@@ -13,8 +13,9 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": false,
+    "noImplicitAny": false,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "react",
     "baseUrl": ".",
     "paths": {
       "@components/*": ["src/components/*"],
@@ -26,8 +27,8 @@
     "types": [
       "node",
       "chrome",
-      "react/next",
-      "react-dom/next",
+      "react",
+      "react-dom",
       "vite-plugin-svg-icons/client"
     ]
   },
