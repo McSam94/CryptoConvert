@@ -74,15 +74,14 @@ const updateCurrency = async () => {
             ?.replaceAll(",", "");
 
           if (isInvalidNumber(amount)) {
-            amount = previousDOM?.textContent?.replaceAll(",", "");
+            amount = previousDOM?.textContent?.replaceAll(",", "").trim();
             snapShotDOM = previousDOM ?? snapShotDOM;
           }
 
           if (isInvalidNumber(amount)) {
-            amount = previousDOM?.firstElementChild?.textContent?.replaceAll(
-              ",",
-              ""
-            );
+            amount = previousDOM?.firstElementChild?.textContent
+              ?.replaceAll(",", "")
+              .trim();
           }
 
           if (!isInvalidNumber(amount)) {
