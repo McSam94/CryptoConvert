@@ -1,7 +1,7 @@
 {
   "name": "crypto-convert",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "scripts": {
     "watch": "NODE_ENV=dev npm-watch",
     "dev": "vite build --mode development --watch",
