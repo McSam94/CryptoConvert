@@ -53,7 +53,6 @@ const updateCurrency = async () => {
   chrome.runtime.sendMessage(
     { type: MESSAGE_EVENTS.GET_MARKETS, payload: { currency } },
     ({ markets }) => {
-      document.body.normalize();
       groupLog("Web scrapping...");
       markets.forEach((market: any) => {
         log(`Searching for ${market.symbol} in the web...`);
