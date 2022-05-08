@@ -6,6 +6,7 @@ import { log } from "@utils/log";
 import Toggle from "@components/Toggle";
 import ReportIssue from "./report-issue";
 import BuyMeCoffee from "./buy-me-coffee";
+import { INTERVAL } from "@constants/interval";
 
 function App() {
   const [isOff, setIsOff] = React.useState<boolean>(false);
@@ -25,7 +26,13 @@ function App() {
     if (!local) return;
 
     log(`Successfully retrieved interval: ${local?.interval}`);
-    setInterval(local?.interval ?? 1);
+    setInterval(
+      +(
+        Object.entries(INTERVAL).find(
+          ([_, value]) => value === local?.interval
+        )?.[0] ?? 0
+      )
+    );
   }, []);
 
   const retrieveOnOff = React.useCallback(async () => {
@@ -57,7 +64,7 @@ function App() {
   React.useEffect(() => {
     chrome.runtime.sendMessage({
       type: MESSAGE_EVENTS.SET_INTERVAL,
-      payload: { interval },
+      payload: { interval: INTERVAL[interval] },
     });
   }, [interval]);
 
@@ -97,7 +104,7 @@ function App() {
                 <Slider
                   min={1}
                   value={interval}
-                  marks={{ 0: 1, 20: 5, 40: 7, 60: 8, 80: 10, 100: 15 }}
+                  marks={INTERVAL}
                   onChange={onIntervalChange}
                   step={null}
                 />

@@ -12,7 +12,7 @@ document.onreadystatechange = () => {
 
   document.head.appendChild(tooltipLink);
 
-  chrome.storage.onChanged.addListener(function (changes) {
+  chrome.storage.onChanged.addListener(function(changes) {
     for (const [_, { oldValue, newValue }] of Object.entries(changes)) {
       if (newValue !== oldValue) startTimer();
     }
@@ -25,7 +25,10 @@ document.addEventListener("DOMSubtreeModified", () => startTimer());
 
 const addTooltip = (selectedDOM: Element, content: string) => {
   selectedDOM.classList.add("cooltipz--top");
-  selectedDOM?.setAttribute("aria-label", content);
+  selectedDOM?.setAttribute(
+    "aria-label",
+    content.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+  );
 };
 
 const isInvalidNumber = (value: string | null | undefined) => {
@@ -57,7 +60,7 @@ const updateCurrency = async () => {
       markets.forEach((market: any) => {
         log(`Searching for ${market.symbol} in the web...`);
         const snapShot = document.evaluate(
-          `//*[contains(text(),"${market.symbol.toUpperCase()}")]`,
+          `//text()[contains(normalize-space(),"${market.symbol.toUpperCase()}")]`,
           document,
           null,
           XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
@@ -65,10 +68,16 @@ const updateCurrency = async () => {
         );
 
         [...new Array(snapShot.snapshotLength).keys()].forEach((idx) => {
-          let snapShotDOM = snapShot.snapshotItem(idx) as Element;
+          const textNodeDOM = snapShot.snapshotItem(idx) as Element;
+
+          let snapShotDOM = textNodeDOM.parentElement ?? textNodeDOM;
+
           const previousDOM = snapShotDOM.previousElementSibling;
 
-          let amount: string | null | undefined = snapShotDOM.textContent
+          let amount:
+            | string
+            | null
+            | undefined = snapShotDOM.textContent
             ?.split(" ")?.[0]
             ?.replaceAll(",", "");
 
