@@ -56,54 +56,67 @@ const updateCurrency = async () => {
   chrome.runtime.sendMessage(
     { type: MESSAGE_EVENTS.GET_MARKETS, payload: { currency } },
     ({ markets }) => {
-      groupLog("Web scrapping...");
-      markets.forEach((market: any) => {
-        log(`Searching for ${market.symbol} in the web...`);
-        const snapShot = document.evaluate(
-          `//text()[contains(normalize-space(),"${market.symbol.toUpperCase()}")]`,
-          document,
-          null,
-          XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
-          null
-        );
-
-        [...new Array(snapShot.snapshotLength).keys()].forEach((idx) => {
-          const textNodeDOM = snapShot.snapshotItem(idx) as Element;
-
-          let snapShotDOM = textNodeDOM.parentElement ?? textNodeDOM;
-
-          const previousDOM = snapShotDOM.previousElementSibling;
-
-          let amount:
-            | string
-            | null
-            | undefined = snapShotDOM.textContent
-            ?.split(" ")?.[0]
-            ?.replaceAll(",", "");
-
-          if (isInvalidNumber(amount)) {
-            amount = previousDOM?.textContent?.replaceAll(",", "").trim();
-            snapShotDOM = previousDOM ?? snapShotDOM;
-          }
-
-          if (isInvalidNumber(amount)) {
-            amount = previousDOM?.firstElementChild?.textContent
-              ?.replaceAll(",", "")
-              .trim();
-          }
-
-          if (!isInvalidNumber(amount)) {
-            log(`Cryptocurrency found: ${amount} ${market.symbol}`);
-            addTooltip(
-              snapShotDOM,
-              `${(market.current_price * +(amount ?? 0)).toFixed(
-                2
-              )} ${currency}`
-            );
-          }
-        });
-      });
-      groupLog("", true);
+      convertCryptoToFiat(markets, currency);
     }
   );
+};
+
+const convertCryptoToFiat = (markets: Array<any>, currency: string) => {
+  groupLog("Web scrapping...");
+  markets.forEach((market: any) => {
+    log(`Searching for ${market.symbol} in the web...`);
+    const snapShot = document.evaluate(
+      `//text()[contains(normalize-space(),"${market.symbol.toUpperCase()}")]`,
+      document,
+      null,
+      XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+      null
+    );
+
+    [...new Array(snapShot.snapshotLength).keys()].forEach((idx) => {
+      const textNodeDOM = snapShot.snapshotItem(idx) as Element;
+
+      let snapShotDOM = textNodeDOM.parentElement ?? textNodeDOM;
+
+      const previousDOM = snapShotDOM.previousElementSibling;
+      const textContent = snapShotDOM.textContent;
+
+      const arrTextContent = textContent?.split(" ");
+
+      let amount: string | null | undefined;
+
+      arrTextContent?.forEach((text, idx) => {
+        const symbol = market.symbol.toUpperCase();
+        if (text === symbol) {
+          amount = arrTextContent[idx - 1]
+            ?.replaceAll(market.symbol.toUpperCase(), "")
+            ?.replaceAll(",", "");
+        } else if (text.includes(symbol)) {
+          amount = text
+            ?.replaceAll(market.symbol.toUpperCase(), "")
+            ?.replaceAll(",", "");
+        }
+      });
+
+      if (isInvalidNumber(amount)) {
+        amount = previousDOM?.textContent?.replaceAll(",", "").trim();
+        snapShotDOM = previousDOM ?? snapShotDOM;
+      }
+
+      if (isInvalidNumber(amount)) {
+        amount = previousDOM?.firstElementChild?.textContent
+          ?.replaceAll(",", "")
+          .trim();
+      }
+
+      if (!isInvalidNumber(amount)) {
+        log(`Cryptocurrency found: ${amount} ${market.symbol}`);
+        addTooltip(
+          snapShotDOM,
+          `${(market.current_price * +(amount ?? 0)).toFixed(2)} ${currency}`
+        );
+      }
+    });
+  });
+  groupLog("", true);
 };
