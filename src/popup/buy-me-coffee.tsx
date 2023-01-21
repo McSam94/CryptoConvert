@@ -3,7 +3,7 @@ import Modal from "@components/Modal";
 import ClipboardJS from "clipboard";
 import * as React from "react";
 
-const MY_BITCOIN_ADDRESS = "3KyoZqCVwjbzBXZWuRfyc1giQjx7kTj4bg";
+const MY_BITCOIN_ADDRESS = "3GQKipraVdTQKZKa5tNSRGj6SNznoKNpv2";
 
 const BuyMeCoffee: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
